@@ -3,54 +3,27 @@ import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Calendar, 
-  Clock, 
-  Users, 
-  Building, 
-  BarChart3, 
-  Download,
-  CheckCircle,
-  Zap,
-  Shield,
-  Smartphone
-} from 'lucide-react';
-
+import { Calendar, Clock, Users, Building, BarChart3, Download, CheckCircle, Zap, Shield, Smartphone } from 'lucide-react';
 const Index = () => {
-  const features = [
-    {
-      icon: <Calendar className="h-8 w-8 text-education-blue" />,
-      title: "Smart Scheduling",
-      description: "AI-powered algorithm creates conflict-free timetables automatically"
-    },
-    {
-      icon: <Users className="h-8 w-8 text-education-green" />,
-      title: "Faculty Management", 
-      description: "Track workloads, leaves, and availability seamlessly"
-    },
-    {
-      icon: <BarChart3 className="h-8 w-8 text-education-purple" />,
-      title: "Analytics Dashboard",
-      description: "Visualize faculty workload and classroom utilization"
-    },
-    {
-      icon: <Download className="h-8 w-8 text-education-orange" />,
-      title: "Export Options",
-      description: "Download timetables as PDF or CSV formats"
-    }
-  ];
-
-  const benefits = [
-    "Automated conflict resolution",
-    "Drag-and-drop customization", 
-    "Faculty workload optimization",
-    "Multiple export formats",
-    "Cloud-based storage",
-    "Mobile responsive design"
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const features = [{
+    icon: <Calendar className="h-8 w-8 text-education-blue" />,
+    title: "Smart Scheduling",
+    description: "AI-powered algorithm creates conflict-free timetables automatically"
+  }, {
+    icon: <Users className="h-8 w-8 text-education-green" />,
+    title: "Faculty Management",
+    description: "Track workloads, leaves, and availability seamlessly"
+  }, {
+    icon: <BarChart3 className="h-8 w-8 text-education-purple" />,
+    title: "Analytics Dashboard",
+    description: "Visualize faculty workload and classroom utilization"
+  }, {
+    icon: <Download className="h-8 w-8 text-education-orange" />,
+    title: "Export Options",
+    description: "Download timetables as PDF or CSV formats"
+  }];
+  const benefits = ["Automated conflict resolution", "Drag-and-drop customization", "Faculty workload optimization", "Multiple export formats", "Cloud-based storage", "Mobile responsive design"];
+  return <div className="min-h-screen bg-background">
       <Navbar />
       
       {/* Hero Section */}
@@ -69,10 +42,7 @@ const Index = () => {
               </span>
             </h1>
             
-            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-              Transform your institution's scheduling with our AI-powered timetable generator. 
-              Handle complex requirements, avoid conflicts, and optimize resources effortlessly.
-            </p>
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">Transforming Classroom Time into Meaningful Progress.</p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button asChild size="lg" className="bg-gradient-primary hover:opacity-90 px-8 py-6 text-lg">
@@ -104,22 +74,18 @@ const Index = () => {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Why Choose TimeTable Pro?
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Built specifically for educational institutions with advanced features 
-              that make scheduling simple and efficient.
-            </p>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">It automates schedule creation, reducing clashes and optimizing class timings.
+Teachers and students get clear, accessible, and well-structured timetables.</p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="shadow-card hover:shadow-elevated transition-all duration-300 bg-gradient-card">
+            {features.map((feature, index) => <Card key={index} className="shadow-card hover:shadow-elevated transition-all duration-300 bg-gradient-card">
                 <CardContent className="p-6 text-center">
                   <div className="mb-4 flex justify-center">{feature.icon}</div>
                   <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
                   <p className="text-muted-foreground">{feature.description}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -141,12 +107,10 @@ const Index = () => {
               </p>
               
               <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                {benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-center gap-3">
+                {benefits.map((benefit, index) => <div key={index} className="flex items-center gap-3">
                     <CheckCircle className="h-5 w-5 text-education-green flex-shrink-0" />
                     <span className="text-foreground">{benefit}</span>
-                  </div>
-                ))}
+                  </div>)}
               </div>
               
               <Button asChild size="lg" className="bg-gradient-success hover:opacity-90">
@@ -235,8 +199,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
