@@ -44,10 +44,10 @@ const About = () => {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            About <span className="bg-gradient-primary bg-clip-text text-transparent">TimeTable Pro</span>
+            About <span className="bg-gradient-primary bg-clip-text text-transparent">ChronoClass</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            TimeTable Pro is a comprehensive solution for educational institutions to create, 
+            ChronoClass is a comprehensive solution for educational institutions to create, 
             manage, and optimize their class schedules with intelligent automation and 
             user-friendly interfaces.
           </p>
@@ -71,7 +71,7 @@ const About = () => {
         {/* Features Grid */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-center mb-12">
-            Why Choose TimeTable Pro?
+            Why Choose ChronoClass?
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
@@ -128,7 +128,7 @@ const About = () => {
                 Ready to Transform Your Scheduling?
               </h2>
               <p className="text-lg text-white/90 mb-6 max-w-2xl mx-auto">
-                Join thousands of educational institutions already using TimeTable Pro 
+                Join thousands of educational institutions already using ChronoClass 
                 to streamline their scheduling process.
               </p>
               <button className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors">

@@ -72,7 +72,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Why Choose TimeTable Pro?
+              Why Choose ChronoClass?
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">It automates schedule creation, reducing clashes and optimizing class timings.
 Teachers and students get clear, accessible, and well-structured timetables.</p>
@@ -180,7 +180,7 @@ Teachers and students get clear, accessible, and well-structured timetables.</p>
             Ready to Revolutionize Your Scheduling?
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join thousands of educational institutions already using TimeTable Pro 
+            Join thousands of educational institutions already using ChronoClass 
             to create perfect schedules in minutes, not hours.
           </p>
           
