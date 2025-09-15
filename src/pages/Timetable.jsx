@@ -218,7 +218,7 @@ const Timetable = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
       <Navbar />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
@@ -252,7 +252,7 @@ const Timetable = () => {
         </div>
 
         {/* Timetable Grid */}
-        <Card className="shadow-elevated mb-8">
+        <Card className="shadow-elevated mb-8 bg-gradient-card backdrop-blur border border-white/10">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>Weekly Schedule</span>
@@ -285,7 +285,7 @@ const Timetable = () => {
                     key={day}
                     className="grid grid-cols-9 gap-1 p-4 border-t"
                   >
-                    <div className="font-medium flex items-center justify-center bg-card rounded py-2">
+                    <div className="font-medium flex items-center justify-center bg-card/70 backdrop-blur rounded py-2">
                       {day}
                     </div>
                     {PERIODS.map((p) => (
@@ -302,7 +302,7 @@ const Timetable = () => {
 
         {/* Subject Legend */}
         <div className="grid md:grid-cols-2 gap-8">
-          <Card className="shadow-card">
+          <Card className="shadow-card bg-gradient-card backdrop-blur border border-white/10">
             <CardHeader>
               <CardTitle>Subject Details</CardTitle>
             </CardHeader>
@@ -345,7 +345,7 @@ const Timetable = () => {
           </Card>
 
           {/* Faculty Workload */}
-          <Card className="shadow-card">
+          <Card className="shadow-card bg-gradient-card backdrop-blur border border-white/10">
             <CardHeader>
               <CardTitle>Faculty Workload</CardTitle>
             </CardHeader>

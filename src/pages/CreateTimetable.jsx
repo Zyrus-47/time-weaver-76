@@ -144,7 +144,7 @@ const CreateTimetable = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
       <Navbar />
       
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -159,7 +159,7 @@ const CreateTimetable = () => {
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Basic Configuration */}
-          <Card className="shadow-card">
+          <Card className="shadow-card bg-gradient-card backdrop-blur border border-white/10">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Building className="h-5 w-5 text-primary" />
@@ -218,7 +218,7 @@ const CreateTimetable = () => {
           </Card>
 
           {/* Subjects Configuration */}
-          <Card className="shadow-card">
+          <Card className="shadow-card bg-gradient-card backdrop-blur border border-white/10">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-primary" />
@@ -227,7 +227,7 @@ const CreateTimetable = () => {
             </CardHeader>
             <CardContent className="space-y-6">
               {subjects.map((subject, index) => (
-                <div key={subject.id} className="p-4 border rounded-lg space-y-4">
+                <div key={subject.id} className="p-4 border rounded-lg space-y-4 bg-card/50 backdrop-blur">
                   <div className="flex justify-between items-center">
                     <h4 className="font-medium">Subject {index + 1}</h4>
                     {subjects.length > 1 && (
@@ -345,7 +345,7 @@ const CreateTimetable = () => {
           </Card>
 
           {/* Break Schedule */}
-          <Card className="shadow-card">
+          <Card className="shadow-card bg-gradient-card backdrop-blur border border-white/10">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Clock className="h-5 w-5 text-primary" />
@@ -391,7 +391,7 @@ const CreateTimetable = () => {
           </Card>
 
           {/* Special Classes */}
-          <Card className="shadow-card">
+          <Card className="shadow-card bg-gradient-card backdrop-blur border border-white/10">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Calendar className="h-5 w-5 text-primary" />
@@ -402,7 +402,7 @@ const CreateTimetable = () => {
               {specialClasses.length > 0 && (
                 <div className="space-y-4">
                   {specialClasses.map((specialClass) => (
-                    <div key={specialClass.id} className="p-4 border rounded-lg">
+                    <div key={specialClass.id} className="p-4 border rounded-lg bg-card/50 backdrop-blur">
                       <div className="flex justify-between items-center mb-4">
                         <h4 className="font-medium">Special Class</h4>
                         <Button
@@ -497,7 +497,7 @@ const CreateTimetable = () => {
             <Button 
               type="submit" 
               size="lg"
-              className="bg-gradient-primary hover:opacity-90 px-12 py-6 text-lg"
+              className="bg-gradient-primary hover:opacity-95 px-12 py-6 text-lg shadow-md"
             >
               <Calendar className="mr-2 h-5 w-5" />
               Generate Timetable

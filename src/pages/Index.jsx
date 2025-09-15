@@ -27,14 +27,14 @@ const Index = () => {
   const benefits = ["Automated conflict resolution", "Drag-and-drop customization", "Faculty workload optimization", "Multiple export formats", "Cloud-based storage", "Mobile responsive design"];
   
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
       <Navbar />
       
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
           <div className="text-center">
-            <Badge className="mb-6 px-4 py-2 bg-gradient-primary text-white">
+            <Badge className="mb-6 px-4 py-2 bg-gradient-primary text-white shadow">
               <Zap className="h-4 w-4 mr-2" />
               Intelligent Scheduling
             </Badge>
@@ -49,13 +49,13 @@ const Index = () => {
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">Transforming Classroom Time into Meaningful Progress.</p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button asChild size="lg" className="bg-gradient-primary hover:opacity-90 px-8 py-6 text-lg">
+              <Button asChild size="lg" className="bg-gradient-primary hover:opacity-95 px-8 py-6 text-lg shadow-md">
                 <Link to="/create">
                   <Calendar className="mr-2 h-5 w-5" />
                   Create Timetable
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="px-8 py-6 text-lg">
+              <Button asChild variant="outline" size="lg" className="px-8 py-6 text-lg hover:bg-muted/60">
                 <Link to="/about">
                   Learn More
                 </Link>
@@ -66,8 +66,8 @@ const Index = () => {
         
         {/* Background decoration */}
         <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-gradient-primary rounded-full opacity-10 blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-success rounded-full opacity-10 blur-3xl" />
+          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-gradient-primary rounded-full opacity-20 blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-success rounded-full opacity-20 blur-3xl animate-pulse" />
         </div>
       </section>
 
@@ -84,7 +84,7 @@ Teachers and students get clear, accessible, and well-structured timetables.</p>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="shadow-card hover:shadow-elevated transition-all duration-300 bg-gradient-card">
+              <Card key={index} className="shadow-card hover:shadow-elevated transition-all duration-300 bg-gradient-card backdrop-blur border border-white/10">
                 <CardContent className="p-6 text-center">
                   <div className="mb-4 flex justify-center">{feature.icon}</div>
                   <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
@@ -129,7 +129,7 @@ Teachers and students get clear, accessible, and well-structured timetables.</p>
             </div>
             
             <div className="relative">
-              <Card className="shadow-elevated bg-gradient-card p-8">
+              <Card className="shadow-elevated bg-gradient-card p-8 backdrop-blur border border-white/10">
                 <div className="space-y-6">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center">
@@ -193,13 +193,13 @@ Teachers and students get clear, accessible, and well-structured timetables.</p>
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" variant="secondary" className="px-8 py-6 text-lg">
+            <Button asChild size="lg" variant="secondary" className="px-8 py-6 text-lg shadow-md">
               <Link to="/create">
                 <Calendar className="mr-2 h-5 w-5" />
                 Create Your First Timetable
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="px-8 py-6 text-lg border-white text-white hover:bg-white hover:text-primary">
+            <Button asChild variant="outline" size="lg" className="px-8 py-6 text-lg border-white text-white hover:bg-white hover:text-primary/90">
               <Link to="/about">
                 Learn More
               </Link>

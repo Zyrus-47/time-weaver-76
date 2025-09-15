@@ -12,11 +12,14 @@ const Navbar = () => {
   }, {
     href: '/about',
     label: 'About'
+  }, {
+    href: '/login',
+    label: 'Login'
   }];
   const isActive = (path) => location.pathname === path;
   
   return (
-    <nav className="bg-card border-b shadow-card sticky top-0 z-50">
+    <nav className="sticky top-0 z-50 border-b bg-card/70 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -32,7 +35,7 @@ const Navbar = () => {
               <Link 
                 key={link.href} 
                 to={link.href} 
-                className={`transition-colors duration-200 ${
+                className={`transition-colors duration-200 hover:opacity-90 ${
                   isActive(link.href) 
                     ? 'text-primary font-medium' 
                     : 'text-muted-foreground hover:text-foreground'
@@ -41,7 +44,7 @@ const Navbar = () => {
                 {link.label}
               </Link>
             )}
-            <Button asChild variant="default" className="bg-gradient-primary hover:opacity-90">
+            <Button asChild variant="default" className="bg-gradient-primary shadow-sm hover:shadow-md hover:opacity-95 transition-shadow">
               <Link to="/create">Get Started</Link>
             </Button>
           </div>
@@ -57,7 +60,7 @@ const Navbar = () => {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-card border-t">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-card/80 backdrop-blur border-t supports-[backdrop-filter]:bg-card/70">
               {navLinks.map(link => 
                 <Link 
                   key={link.href} 
@@ -73,7 +76,7 @@ const Navbar = () => {
                 </Link>
               )}
               <div className="px-3 py-2">
-                <Button asChild variant="default" className="w-full bg-gradient-primary">
+                <Button asChild variant="default" className="w-full bg-gradient-primary shadow-sm">
                   <Link to="/create" onClick={() => setIsOpen(false)}>
                     Get Started
                   </Link>

@@ -37,7 +37,7 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
       <Navbar />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -55,7 +55,7 @@ const About = () => {
 
         {/* Mission Section */}
         <div className="mb-16">
-          <Card className="shadow-elevated bg-gradient-card">
+          <Card className="shadow-elevated bg-gradient-card backdrop-blur border border-white/10">
             <CardContent className="p-8">
               <h2 className="text-3xl font-bold text-center mb-6">Our Mission</h2>
               <p className="text-lg text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
@@ -75,7 +75,7 @@ const About = () => {
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="shadow-card hover:shadow-elevated transition-all duration-300">
+              <Card key={index} className="shadow-card hover:shadow-elevated transition-all duration-300 bg-gradient-card backdrop-blur border border-white/10">
                 <CardContent className="p-6">
                   <div className="mb-4">{feature.icon}</div>
                   <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
@@ -91,7 +91,7 @@ const About = () => {
           <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-primary rounded-full flex items-center justify-center shadow">
                 <span className="text-2xl font-bold text-white">1</span>
               </div>
               <h3 className="text-xl font-semibold mb-3">Input Your Data</h3>
@@ -100,7 +100,7 @@ const About = () => {
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-success rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-success rounded-full flex items-center justify-center shadow">
                 <span className="text-2xl font-bold text-white">2</span>
               </div>
               <h3 className="text-xl font-semibold mb-3">Generate Schedule</h3>
@@ -109,7 +109,7 @@ const About = () => {
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-education-purple rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto mb-4 bg-education-purple rounded-full flex items-center justify-center shadow">
                 <span className="text-2xl font-bold text-white">3</span>
               </div>
               <h3 className="text-xl font-semibold mb-3">Customize & Export</h3>
@@ -131,7 +131,7 @@ const About = () => {
                 Join thousands of educational institutions already using ChronoClass 
                 to streamline their scheduling process.
               </p>
-              <button className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors">
+              <button className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors shadow">
                 Start Creating Timetables
               </button>
             </CardContent>

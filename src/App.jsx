@@ -8,6 +8,7 @@ import About from "./pages/About";
 import CreateTimetable from "./pages/CreateTimetable";
 import Timetable from "./pages/Timetable";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/create" element={<CreateTimetable />} />
           <Route path="/timetable" element={<Timetable />} />
+          <Route path="/login" element={<Login />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
