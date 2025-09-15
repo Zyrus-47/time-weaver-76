@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, Users, Building, BarChart3, Download, CheckCircle, Zap, Shield, Smartphone } from 'lucide-react';
+
 const Index = () => {
   const features = [{
     icon: <Calendar className="h-8 w-8 text-education-blue" />,
@@ -22,8 +23,11 @@ const Index = () => {
     title: "Export Options",
     description: "Download timetables as PDF or CSV formats"
   }];
+  
   const benefits = ["Automated conflict resolution", "Drag-and-drop customization", "Faculty workload optimization", "Multiple export formats", "Cloud-based storage", "Mobile responsive design"];
-  return <div className="min-h-screen bg-background">
+  
+  return (
+    <div className="min-h-screen bg-background">
       <Navbar />
       
       {/* Hero Section */}
@@ -79,13 +83,15 @@ Teachers and students get clear, accessible, and well-structured timetables.</p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => <Card key={index} className="shadow-card hover:shadow-elevated transition-all duration-300 bg-gradient-card">
+            {features.map((feature, index) => (
+              <Card key={index} className="shadow-card hover:shadow-elevated transition-all duration-300 bg-gradient-card">
                 <CardContent className="p-6 text-center">
                   <div className="mb-4 flex justify-center">{feature.icon}</div>
                   <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
                   <p className="text-muted-foreground">{feature.description}</p>
                 </CardContent>
-              </Card>)}
+              </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -107,10 +113,12 @@ Teachers and students get clear, accessible, and well-structured timetables.</p>
               </p>
               
               <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                {benefits.map((benefit, index) => <div key={index} className="flex items-center gap-3">
+                {benefits.map((benefit, index) => (
+                  <div key={index} className="flex items-center gap-3">
                     <CheckCircle className="h-5 w-5 text-education-green flex-shrink-0" />
                     <span className="text-foreground">{benefit}</span>
-                  </div>)}
+                  </div>
+                ))}
               </div>
               
               <Button asChild size="lg" className="bg-gradient-success hover:opacity-90">
@@ -199,6 +207,8 @@ Teachers and students get clear, accessible, and well-structured timetables.</p>
           </div>
         </div>
       </section>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;

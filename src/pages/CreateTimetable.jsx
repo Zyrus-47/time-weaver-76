@@ -12,23 +12,6 @@ import { Separator } from '@/components/ui/separator';
 import { Plus, Minus, Calendar, Clock, Users, Building } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-interface Subject {
-  id: string;
-  name: string;
-  code: string;
-  priority: 'high' | 'medium' | 'low';
-  classesPerWeek: number;
-  faculties: string[];
-}
-
-interface SpecialClass {
-  id: string;
-  name: string;
-  day: string;
-  period: string;
-  venue: string;
-}
-
 const CreateTimetable = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -43,15 +26,15 @@ const CreateTimetable = () => {
     lunchBreakEnd: '13:00'
   });
 
-  const [subjects, setSubjects] = useState<Subject[]>([
+  const [subjects, setSubjects] = useState([
     { id: '1', name: '', code: '', priority: 'medium', classesPerWeek: 4, faculties: [''] }
   ]);
 
-  const [specialClasses, setSpecialClasses] = useState<SpecialClass[]>([]);
-  const [events, setEvents] = useState<string>('');
+  const [specialClasses, setSpecialClasses] = useState([]);
+  const [events, setEvents] = useState('');
 
   const addSubject = () => {
-    const newSubject: Subject = {
+    const newSubject = {
       id: Date.now().toString(),
       name: '',
       code: '',
@@ -62,19 +45,19 @@ const CreateTimetable = () => {
     setSubjects([...subjects, newSubject]);
   };
 
-  const removeSubject = (id: string) => {
+  const removeSubject = (id) => {
     if (subjects.length > 1) {
       setSubjects(subjects.filter(subject => subject.id !== id));
     }
   };
 
-  const updateSubject = (id: string, field: keyof Subject, value: any) => {
+  const updateSubject = (id, field, value) => {
     setSubjects(subjects.map(subject => 
       subject.id === id ? { ...subject, [field]: value } : subject
     ));
   };
 
-  const addFaculty = (subjectId: string) => {
+  const addFaculty = (subjectId) => {
     setSubjects(subjects.map(subject => 
       subject.id === subjectId 
         ? { ...subject, faculties: [...subject.faculties, ''] }
@@ -82,7 +65,7 @@ const CreateTimetable = () => {
     ));
   };
 
-  const removeFaculty = (subjectId: string, facultyIndex: number) => {
+  const removeFaculty = (subjectId, facultyIndex) => {
     setSubjects(subjects.map(subject => 
       subject.id === subjectId 
         ? { ...subject, faculties: subject.faculties.filter((_, index) => index !== facultyIndex) }
@@ -90,7 +73,7 @@ const CreateTimetable = () => {
     ));
   };
 
-  const updateFaculty = (subjectId: string, facultyIndex: number, value: string) => {
+  const updateFaculty = (subjectId, facultyIndex, value) => {
     setSubjects(subjects.map(subject => 
       subject.id === subjectId 
         ? { 
@@ -104,7 +87,7 @@ const CreateTimetable = () => {
   };
 
   const addSpecialClass = () => {
-    const newSpecialClass: SpecialClass = {
+    const newSpecialClass = {
       id: Date.now().toString(),
       name: '',
       day: '',
@@ -114,17 +97,17 @@ const CreateTimetable = () => {
     setSpecialClasses([...specialClasses, newSpecialClass]);
   };
 
-  const removeSpecialClass = (id: string) => {
+  const removeSpecialClass = (id) => {
     setSpecialClasses(specialClasses.filter(sc => sc.id !== id));
   };
 
-  const updateSpecialClass = (id: string, field: keyof SpecialClass, value: string) => {
+  const updateSpecialClass = (id, field, value) => {
     setSpecialClasses(specialClasses.map(sc => 
       sc.id === id ? { ...sc, [field]: value } : sc
     ));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     
     // Validate form
@@ -283,7 +266,7 @@ const CreateTimetable = () => {
                       <Label>Priority</Label>
                       <Select
                         value={subject.priority}
-                        onValueChange={(value: 'high' | 'medium' | 'low') => 
+                        onValueChange={(value) => 
                           updateSubject(subject.id, 'priority', value)
                         }
                       >
@@ -465,7 +448,7 @@ const CreateTimetable = () => {
                           <Input
                             value={specialClass.period}
                             onChange={(e) => updateSpecialClass(specialClass.id, 'period', e.target.value)}
-                            placeholder="e.g., Period 3"
+                            placeholder="e.g., Period I"
                             className="mt-1"
                           />
                         </div>
@@ -493,16 +476,16 @@ const CreateTimetable = () => {
                 <Plus className="h-4 w-4 mr-2" />
                 Add Special Class
               </Button>
-
+              
               <Separator />
-
+              
               <div>
-                <Label htmlFor="events">Events & Workshops (Optional)</Label>
+                <Label htmlFor="events">Events & Workshops</Label>
                 <Textarea
                   id="events"
                   value={events}
                   onChange={(e) => setEvents(e.target.value)}
-                  placeholder="Describe any special events, workshops, or scheduling notes..."
+                  placeholder="Enter any special events, workshops, or occasions (one per line)"
                   className="mt-1 min-h-[100px]"
                 />
               </div>
@@ -510,12 +493,13 @@ const CreateTimetable = () => {
           </Card>
 
           {/* Submit Button */}
-          <div className="flex justify-end">
-            <Button
-              type="submit"
+          <div className="flex justify-center">
+            <Button 
+              type="submit" 
               size="lg"
-              className="bg-gradient-primary hover:opacity-90 px-8"
+              className="bg-gradient-primary hover:opacity-90 px-12 py-6 text-lg"
             >
+              <Calendar className="mr-2 h-5 w-5" />
               Generate Timetable
             </Button>
           </div>

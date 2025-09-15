@@ -26,39 +26,6 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-// ---------------------- TYPES ----------------------
-
-interface Subject {
-  id: string;
-  code: string;
-  name: string;
-  faculties: string[];
-  classesPerWeek: number;
-  priority?: "high" | "normal";
-}
-
-interface SpecialClass {
-  day: string;
-  period: string;
-  name: string;
-  venue: string;
-}
-
-interface TimetableCell {
-  subject?: string;
-  code?: string;
-  faculty?: string;
-  venue?: string;
-  color?: string;
-  isBreak?: boolean;
-  isLunch?: boolean;
-  isSpecial?: boolean;
-}
-
-interface TimetableData {
-  [day: string]: { [period: string]: TimetableCell };
-}
-
 // ---------------------- CONSTANTS ----------------------
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -83,12 +50,12 @@ const SUBJECT_COLORS = [
 
 // ---------------------- UTILS ----------------------
 
-function shuffleArray<T>(arr: T[]): T[] {
+function shuffleArray(arr) {
   return [...arr].sort(() => Math.random() - 0.5);
 }
 
-function initializeEmptyTimetable(): TimetableData {
-  const timetable: TimetableData = {};
+function initializeEmptyTimetable() {
+  const timetable = {};
   DAYS.forEach((day) => {
     timetable[day] = {};
     PERIODS.forEach((period) => {
@@ -104,11 +71,7 @@ function initializeEmptyTimetable(): TimetableData {
   return timetable;
 }
 
-function generateTimetable(
-  subjects: Subject[],
-  specialClasses: SpecialClass[],
-  classrooms: number
-): TimetableData {
+function generateTimetable(subjects, specialClasses, classrooms) {
   const timetable = initializeEmptyTimetable();
   let colorIndex = 0;
 
@@ -179,8 +142,8 @@ const Timetable = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [timetableData, setTimetableData] = useState<TimetableData>({});
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [timetableData, setTimetableData] = useState({});
+  const [subjects, setSubjects] = useState([]);
 
   useEffect(() => {
     const data = location.state;
@@ -204,7 +167,7 @@ const Timetable = () => {
   const handleExportCSV = () =>
     toast({ title: "Export Started", description: "Generating CSV..." });
 
-  const renderCell = (day: string, period: string) => {
+  const renderCell = (day, period) => {
     const cell = timetableData[day]?.[period];
     if (!cell || (!cell.subject && !cell.isLunch)) {
       return (
