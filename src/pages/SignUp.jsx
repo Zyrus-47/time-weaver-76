@@ -8,49 +8,68 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import Navbar from '@/components/Navbar';
 
-const Login = () => {
+const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleLogin = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Passwords do not match"
+      });
+      return;
+    }
+
+    if (password.length < 6) {
+      toast({
+        variant: "destructive", 
+        title: "Error",
+        description: "Password must be at least 6 characters long"
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const redirectUrl = `${window.location.origin}/`;
+      
+      const { error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: redirectUrl
+        }
       });
 
       if (error) {
-        if (error.message.includes('Invalid login credentials')) {
+        if (error.message.includes('already registered')) {
           toast({
             variant: "destructive",
-            title: "Login failed",
-            description: "Invalid email or password. Please check your credentials and try again."
-          });
-        } else if (error.message.includes('Email not confirmed')) {
-          toast({
-            variant: "destructive", 
-            title: "Email not confirmed",
-            description: "Please check your email and click the confirmation link before signing in."
+            title: "Account exists",
+            description: "An account with this email already exists. Please sign in instead."
           });
         } else {
           toast({
             variant: "destructive",
-            title: "Login failed",
+            title: "Sign up failed",
             description: error.message
           });
         }
       } else {
         toast({
-          title: "Welcome back!",
-          description: "You have been successfully signed in."
+          title: "Check your email",
+          description: "We've sent you a confirmation link to complete your registration."
         });
-        navigate('/');
+        navigate('/login');
       }
     } catch (error) {
       toast({
@@ -69,8 +88,8 @@ const Login = () => {
       <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <Card className="shadow-card bg-gradient-card">
           <CardContent className="p-6">
-            <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
-            <form onSubmit={handleLogin} className="space-y-4">
+            <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
+            <form onSubmit={handleSignUp} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input 
@@ -93,16 +112,27 @@ const Login = () => {
                   required 
                 />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input 
+                  id="confirmPassword" 
+                  type="password" 
+                  placeholder="••••••••" 
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required 
+                />
+              </div>
               <Button 
                 type="submit" 
                 className="w-full bg-gradient-primary"
                 disabled={loading}
               >
-                {loading ? 'Signing in...' : 'Sign in'}
+                {loading ? 'Creating account...' : 'Create account'}
               </Button>
             </form>
             <p className="text-sm text-muted-foreground mt-4 text-center">
-              Don't have an account? <Link to="/signup" className="text-primary hover:underline">Sign up</Link>
+              Already have an account? <Link to="/login" className="text-primary hover:underline">Sign in</Link>
             </p>
           </CardContent>
         </Card>
@@ -111,6 +141,4 @@ const Login = () => {
   );
 };
 
-export default Login;
-
-
+export default SignUp;
