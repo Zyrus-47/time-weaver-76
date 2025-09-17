@@ -1,6 +1,12 @@
 import Navbar from '@/components/Navbar';
 import { Card, CardContent } from '@/components/ui/card';
 import { GraduationCap, Clock, Users, Calendar, Target, Zap } from 'lucide-react';
+import teamMember1 from '@/assets/team-member-1.jpg';
+import teamMember2 from '@/assets/team-member-2.jpg';
+import teamMember3 from '@/assets/team-member-3.jpg';
+import teamMember4 from '@/assets/team-member-4.jpg';
+import teamMember5 from '@/assets/team-member-5.jpg';
+import teamMember6 from '@/assets/team-member-6.jpg';
 
 const About = () => {
   const features = [
@@ -53,19 +59,65 @@ const About = () => {
           </p>
         </div>
 
-        {/* Mission Section */}
+        {/* Meet The Team Section */}
         <div className="mb-16">
-          <Card className="shadow-elevated bg-gradient-card backdrop-blur border border-white/10">
-            <CardContent className="p-8">
-              <h2 className="text-3xl font-bold text-center mb-6">Our Mission</h2>
-              <p className="text-lg text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
-                We believe that efficient scheduling is the backbone of quality education. 
-                Our mission is to empower educational institutions with smart, automated 
-                timetabling solutions that save time, reduce conflicts, and optimize 
-                resource utilization.
-              </p>
-            </CardContent>
-          </Card>
+          <h2 className="text-3xl font-bold text-center mb-12">Meet The Team</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 max-w-4xl mx-auto">
+            <div className="flex flex-col items-center">
+              <div className="w-24 h-24 rounded-full overflow-hidden mb-3 shadow-card">
+                <img 
+                  src={teamMember1} 
+                  alt="Team Member"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="w-24 h-24 rounded-full overflow-hidden mb-3 shadow-card">
+                <img 
+                  src={teamMember2} 
+                  alt="Team Member"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="w-24 h-24 rounded-full overflow-hidden mb-3 shadow-card">
+                <img 
+                  src={teamMember3} 
+                  alt="Team Member"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="w-24 h-24 rounded-full overflow-hidden mb-3 shadow-card">
+                <img 
+                  src={teamMember4} 
+                  alt="Team Member"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="w-24 h-24 rounded-full overflow-hidden mb-3 shadow-card">
+                <img 
+                  src={teamMember5} 
+                  alt="Team Member"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="w-24 h-24 rounded-full overflow-hidden mb-3 shadow-card">
+                <img 
+                  src={teamMember6} 
+                  alt="Team Member"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Features Grid */}
