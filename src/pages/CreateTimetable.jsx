@@ -23,7 +23,8 @@ const CreateTimetable = () => {
     avgFacultyLeaves: 2,
     breakDuration: 60,
     lunchBreakStart: '12:00',
-    lunchBreakEnd: '13:00'
+    lunchBreakEnd: '13:00',
+    classDurationMinutes: 50
   });
 
   const [subjects, setSubjects] = useState([
@@ -176,6 +177,18 @@ const CreateTimetable = () => {
                     min="1"
                     value={formData.classrooms}
                     onChange={(e) => setFormData({...formData, classrooms: parseInt(e.target.value)})}
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="classDurationMinutes">Class Duration (minutes)</Label>
+                  <Input
+                    id="classDurationMinutes"
+                    type="number"
+                    min="30"
+                    max="180"
+                    value={formData.classDurationMinutes}
+                    onChange={(e) => setFormData({...formData, classDurationMinutes: parseInt(e.target.value || '50') || 50})}
                     className="mt-1"
                   />
                 </div>

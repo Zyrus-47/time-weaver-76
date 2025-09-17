@@ -10,6 +10,7 @@ import Timetable from "./pages/Timetable";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import FacultySchedule from "./pages/FacultySchedule";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/create" element={<CreateTimetable />} />
           <Route path="/timetable" element={<Timetable />} />
+          <Route path="/faculty" element={<FacultySchedule />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

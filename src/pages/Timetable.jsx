@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Link } from "react-router-dom";
 import {
   Download,
   Save,
@@ -25,21 +26,12 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import * as htmlToImage from "html-to-image";
 
 // ---------------------- CONSTANTS ----------------------
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const PERIODS = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
-const TIME_SLOTS = [
-  "09:00-09:50",
-  "09:50-10:40",
-  "10:40-11:30",
-  "11:30-12:20",
-  "12:20-13:10",
-  "14:10-15:00",
-  "15:00-15:50",
-  "15:50-16:40",
-];
 const SUBJECT_COLORS = [
   "bg-education-blue/20 text-education-blue border-education-blue/30",
   "bg-education-green/20 text-education-green border-education-green/30",
@@ -144,6 +136,8 @@ const Timetable = () => {
 
   const [timetableData, setTimetableData] = useState({});
   const [subjects, setSubjects] = useState([]);
+  const [dragSource, setDragSource] = useState(null); // { day, period }
+  const [dragOverKey, setDragOverKey] = useState(null); // `${day}-${period}`
 
   useEffect(() => {
     const data = location.state;
@@ -158,6 +152,35 @@ const Timetable = () => {
     );
   }, [location.state, navigate]);
 
+  const classDurationMinutes = location.state?.formData?.classDurationMinutes || 50;
+
+  const computeTimeSlots = () => {
+    // Start at 09:00, periods I-IV continuous, lunch (60m), then VI-VIII
+    const pad = (n) => (n < 10 ? `0${n}` : `${n}`);
+    let hour = 9;
+    let minute = 0;
+    const slots = [];
+    const add = (mins) => {
+      const startH = hour, startM = minute;
+      minute += mins;
+      while (minute >= 60) { minute -= 60; hour += 1; }
+      return `${pad(startH)}:${pad(startM)}-${pad(hour)}:${pad(minute)}`;
+    };
+    // I-IV
+    for (let i = 0; i < 4; i++) slots.push(add(classDurationMinutes));
+    // Lunch 60m
+    const lunchStartH = hour, lunchStartM = minute;
+    minute += 60;
+    while (minute >= 60) { minute -= 60; hour += 1; }
+    const lunchLabel = `${pad(lunchStartH)}:${pad(lunchStartM)} - ${pad(hour)}:${pad(minute)}`;
+    // V (lunch) placeholder; we won't render from slots for lunch label, use computed label
+    slots.push(lunchLabel);
+    // VI-VIII
+    for (let i = 0; i < 3; i++) slots.push(add(classDurationMinutes));
+    return slots;
+  };
+  const TIME_SLOTS = computeTimeSlots();
+
   const handleSave = () =>
     toast({ title: "Timetable Saved", description: "Your timetable is saved!" });
 
@@ -167,11 +190,129 @@ const Timetable = () => {
   const handleExportCSV = () =>
     toast({ title: "Export Started", description: "Generating CSV..." });
 
+  const handleExportImage = async () => {
+    try {
+      const node = document.getElementById("timetable-capture");
+      if (!node) {
+        toast({ title: "Export Failed", description: "Timetable not found.", variant: "destructive" });
+        return;
+      }
+      const dataUrl = await htmlToImage.toPng(node, {
+        pixelRatio: 2,
+      });
+      const link = document.createElement("a");
+      link.download = "timetable.png";
+      link.href = dataUrl;
+      link.click();
+      try {
+        localStorage.setItem("timetable_image", dataUrl);
+      } catch {}
+      toast({ title: "Exported", description: "Timetable saved as image." });
+    } catch (e) {
+      toast({ title: "Export Failed", description: "Could not export image.", variant: "destructive" });
+    }
+  };
+
+  const isLunch = (day, period) => !!timetableData[day]?.[period]?.isLunch;
+
+  const handleDragStart = (day, period, e) => {
+    if (isLunch(day, period)) return;
+    try {
+      e?.dataTransfer?.setData("text/plain", `${day}-${period}`);
+      if (e?.dataTransfer) e.dataTransfer.effectAllowed = "move";
+    } catch {}
+    setDragSource({ day, period });
+  };
+
+  const handleDragOver = (e, day, period) => {
+    if (isLunch(day, period)) return;
+    e.preventDefault();
+    try {
+      if (e?.dataTransfer) e.dataTransfer.dropEffect = "move";
+    } catch {}
+    setDragOverKey(`${day}-${period}`);
+  };
+
+  const handleDragEnter = (day, period) => {
+    if (isLunch(day, period)) return;
+    setDragOverKey(`${day}-${period}`);
+  };
+
+  const handleDragLeave = (day, period) => {
+    const key = `${day}-${period}`;
+    if (dragOverKey === key) setDragOverKey(null);
+  };
+
+  const handleDrop = (e, day, period) => {
+    e?.preventDefault?.();
+    const targetKey = `${day}-${period}`;
+    setDragOverKey(null);
+    let source = dragSource;
+    if (!source) {
+      try {
+        const data = e?.dataTransfer?.getData("text/plain");
+        if (data && data.includes("-")) {
+          const [sDay, sPeriod] = data.split("-");
+          source = { day: sDay, period: sPeriod };
+        }
+      } catch {}
+    }
+    if (!source) return;
+    if (isLunch(day, period)) {
+      toast({ title: "Not allowed", description: "Cannot drop onto lunch break.", variant: "destructive" });
+      setDragSource(null);
+      return;
+    }
+    const { day: srcDay, period: srcPeriod } = source;
+    if (srcDay === day && srcPeriod === period) {
+      setDragSource(null);
+      return;
+    }
+    setTimetableData((prev) => {
+      const next = { ...prev };
+      // Same-day move: operate on a single row to avoid overwrites
+      if (srcDay === day) {
+        const row = { ...(next[srcDay] || {}) };
+        const srcCell = row[srcPeriod] ? { ...row[srcPeriod] } : {};
+        const dstCell = row[period] ? { ...row[period] } : {};
+        if (dstCell.isLunch) return prev;
+        const destinationHasSubject = !!dstCell.subject;
+        row[period] = srcCell;
+        row[srcPeriod] = destinationHasSubject ? dstCell : {};
+        return { ...next, [srcDay]: row };
+      }
+      // Cross-day move: update two independent rows
+      const nextSrcRow = { ...(next[srcDay] || {}) };
+      const nextDstRow = { ...(next[day] || {}) };
+      const srcCell = nextSrcRow[srcPeriod] ? { ...nextSrcRow[srcPeriod] } : {};
+      const dstCell = nextDstRow[period] ? { ...nextDstRow[period] } : {};
+      if (dstCell.isLunch) return prev;
+      const destinationHasSubject = !!dstCell.subject;
+      nextDstRow[period] = srcCell;
+      nextSrcRow[srcPeriod] = destinationHasSubject ? dstCell : {};
+      return { ...next, [srcDay]: nextSrcRow, [day]: nextDstRow };
+    });
+    setDragSource(null);
+  };
+
+  const handleDragEnd = () => {
+    setDragOverKey(null);
+  };
+
   const renderCell = (day, period) => {
     const cell = timetableData[day]?.[period];
     if (!cell || (!cell.subject && !cell.isLunch)) {
       return (
-        <div className="p-2 h-20 border border-dashed border-muted-foreground/30 rounded flex items-center justify-center">
+        <div
+          className={`p-2 h-20 border border-dashed border-muted-foreground/30 rounded flex items-center justify-center ${
+            dragOverKey === `${day}-${period}` ? "ring-2 ring-primary/60" : ""
+          }`}
+          draggable={false}
+          onDragOver={(e) => handleDragOver(e, day, period)}
+          onDragEnter={() => handleDragEnter(day, period)}
+          onDragLeave={() => handleDragLeave(day, period)}
+          onDrop={(e) => handleDrop(e, day, period)}
+        >
           <span className="text-xs text-muted-foreground">Free</span>
         </div>
       );
@@ -181,9 +322,7 @@ const Timetable = () => {
       return (
         <div className="p-2 h-20 bg-muted rounded flex flex-col items-center justify-center">
           <span className="font-medium text-sm">LUNCH BREAK</span>
-          <span className="text-xs text-muted-foreground">
-            13:10 - 14:10
-          </span>
+          <span className="text-xs text-muted-foreground">{TIME_SLOTS[4]}</span>
         </div>
       );
     }
@@ -193,6 +332,13 @@ const Timetable = () => {
         className={`p-2 h-20 border rounded ${
           cell.color || "bg-card"
         } flex flex-col justify-between text-xs`}
+        draggable={true}
+        onDragStart={(e) => handleDragStart(day, period, e)}
+        onDragEnd={handleDragEnd}
+        onDragOver={(e) => handleDragOver(e, day, period)}
+        onDragEnter={() => handleDragEnter(day, period)}
+        onDragLeave={() => handleDragLeave(day, period)}
+        onDrop={(e) => handleDrop(e, day, period)}
       >
         <div>
           <div className="font-medium truncate">{cell.code}</div>
@@ -245,6 +391,9 @@ const Timetable = () => {
             <Button variant="outline" size="sm" onClick={handleExportCSV}>
               <Download className="h-4 w-4 mr-2" /> CSV
             </Button>
+            <Button variant="outline" size="sm" onClick={handleExportImage}>
+              <Download className="h-4 w-4 mr-2" /> Image
+            </Button>
             <Button variant="outline" size="sm">
               <BarChart3 className="h-4 w-4 mr-2" /> Analytics
             </Button>
@@ -252,7 +401,7 @@ const Timetable = () => {
         </div>
 
         {/* Timetable Grid */}
-        <Card className="shadow-elevated mb-8 bg-gradient-card backdrop-blur border border-white/10">
+        <Card className="shadow-elevated mb-8 bg-gradient-card backdrop-blur border border-white/10" id="timetable-capture">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>Weekly Schedule</span>
@@ -289,7 +438,10 @@ const Timetable = () => {
                       {day}
                     </div>
                     {PERIODS.map((p) => (
-                      <div key={`${day}-${p}`} className="min-h-[80px]">
+                      <div
+                        key={`${day}-${p}`}
+                        className="min-h-[80px]"
+                      >
                         {renderCell(day, p)}
                       </div>
                     ))}
@@ -333,7 +485,22 @@ const Timetable = () => {
                         {subj.name}
                       </TableCell>
                       <TableCell>
-                        {subj.faculties[0] || "TBA"}
+                        {subj.faculties[0] ? (
+                          <Link
+                            to="/faculty"
+                            state={{
+                              faculty: subj.faculties[0],
+                              timetableData,
+                              classDurationMinutes,
+                              subjects,
+                            }}
+                            className="underline underline-offset-2 hover:text-primary"
+                          >
+                            {subj.faculties[0]}
+                          </Link>
+                        ) : (
+                          "TBA"
+                        )}
                       </TableCell>
                       <TableCell>{subj.classesPerWeek}</TableCell>
                       <TableCell>{subj.priority || "normal"}</TableCell>
